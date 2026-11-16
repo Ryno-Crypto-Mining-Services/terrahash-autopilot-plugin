@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "autopilot": {
+      "url": "http://127.0.0.1:18100/mcp"
+    },
+    "btc-insights": {
+      "url": "http://127.0.0.1:18000/mcp"
+    }
+  },
+  "_comments": {
+    "loopback": "Local Autopilot MCP defaults to 127.0.0.1:18100/mcp; BTC Insights port is operator-chosen.",
+    "tailscale_pattern": "Operators on an enrolled Tailscale mesh may use MagicDNS patterns such as http://terrahash-autopilot-mcp.<tailnet>:18100/mcp — not a claimed live host in this repository.",
+    "no_public_fqdn": "This fixture must not invent public Cloudflare or internet FQDNs."
+  }
+}

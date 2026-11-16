@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
+        with:
+          python-version: "3.12"
+
+      - name: Validate skills
+        run: python3 scripts/validate_skills.py
+
+      - name: Validate mcp.json
+        run: python3 scripts/validate_mcp_json.py
+
+      - name: Validate protocol pins
+        run: python3 scripts/validate_pins.py
+
+      - name: Scan the tracked tree for credentials
+        run: |  # pragma: allowlist secret
+          python -m pip install detect-secrets==1.5.0
+          detect-secrets-hook --baseline .secrets.baseline $(git ls-files)

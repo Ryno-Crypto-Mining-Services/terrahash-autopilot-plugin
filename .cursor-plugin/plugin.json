@@ -1,0 +1,36 @@
+{
+  "name": "terrahash-autopilot",
+  "version": "0.1.0",
+  "description": "Host connector skills and MCP config for TerraHash Autopilot and BTC Insights (read-only; placeholders only).",
+  "author": {
+    "name": "Ryno Crypto Mining Services"
+  },
+  "homepage": "https://github.com/Ryno-Crypto-Mining-Services/terrahash-autopilot-plugin",
+  "repository": "https://github.com/Ryno-Crypto-Mining-Services/terrahash-autopilot-plugin",
+  "license": "Apache-2.0",
+  "keywords": [
+    "terrahash",
+    "autopilot",
+    "bitcoin",
+    "mining",
+    "mcp",
+    "a2a",
+    "skills"
+  ],
+  "variables": {
+    "type": "object",
+    "properties": {
+      "AUTOPILOT_MCP_URL": {
+        "type": "string",
+        "title": "Autopilot MCP URL",
+        "description": "HTTP MCP base URL for Autopilot (e.g. http://127.0.0.1:18100/mcp). No public FQDN is claimed by this plugin."
+      },
+      "BTC_INSIGHTS_MCP_URL": {
+        "type": "string",
+        "title": "BTC Insights MCP URL",
+        "description": "HTTP MCP base URL for BTC Insights. Operators supply an approved endpoint; this plugin ships placeholders only."
+      }
+    },
+    "required": ["AUTOPILOT_MCP_URL", "BTC_INSIGHTS_MCP_URL"]
+  }
+}

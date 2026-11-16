@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "autopilot": {
+      "url": "${AUTOPILOT_MCP_URL}"
+    },
+    "btc-insights": {
+      "url": "${BTC_INSIGHTS_MCP_URL}"
+    }
+  }
+}
