@@ -31,10 +31,9 @@ ALLOWED_TOOL_IDS = frozenset(
 )
 
 FRONTMATTER_RE = re.compile(r"\A---\n(?P<body>.*?)\n---\n", re.DOTALL)
-NAME_RE = re.compile(r"^name:\s*(.+)$", re.MULTILINE)
-DESC_RE = re.compile(r"^description:\s*(.+)$", re.MULTILINE)
 # MCP-style tool ids referenced in backticks.
 TOOL_ID_RE = re.compile(r"`((?:estimate|get)_[a-z0-9_]+)`")
+SCALAR_MARKERS = frozenset({">", ">-", "|", "|-", "|+"})
 
 
 def _fail(message: str) -> None:
@@ -42,19 +41,49 @@ def _fail(message: str) -> None:
     raise SystemExit(1)
 
 
+def _parse_simple_mapping(body: str) -> dict[str, str]:
+    """Parse a minimal YAML-like mapping used by skill frontmatter (stdlib only)."""
+    lines = body.splitlines()
+    result: dict[str, str] = {}
+    index = 0
+    while index < len(lines):
+        line = lines[index]
+        if not line.strip() or line.lstrip().startswith("#"):
+            index += 1
+            continue
+        if ":" not in line or line[:1].isspace():
+            _fail(f"unexpected frontmatter line: {line!r}")
+        key, _, raw_value = line.partition(":")
+        key = key.strip()
+        raw_value = raw_value.strip()
+        if raw_value in SCALAR_MARKERS:
+            chunks: list[str] = []
+            index += 1
+            while index < len(lines):
+                continuation = lines[index]
+                if continuation and not continuation[:1].isspace():
+                    break
+                chunks.append(continuation.strip())
+                index += 1
+            value = " ".join(part for part in chunks if part).strip()
+            result[key] = value
+            continue
+        result[key] = raw_value.strip().strip("\"'")
+        index += 1
+    return result
+
+
 def _parse_frontmatter(text: str, path: Path) -> str:
     match = FRONTMATTER_RE.match(text)
     if match is None:
         _fail(f"{path}: missing YAML frontmatter")
-    body = match.group("body")
-    name_match = NAME_RE.search(body)
-    desc_match = DESC_RE.search(body)
-    if name_match is None or desc_match is None:
-        _fail(f"{path}: frontmatter requires name and description")
-    name = name_match.group(1).strip().strip("\"'")
-    description = desc_match.group(1).strip()
+    fields = _parse_simple_mapping(match.group("body"))
+    name = fields.get("name", "").strip()
+    description = fields.get("description", "").strip()
     if not name or not description:
-        _fail(f"{path}: name/description must be non-empty")
+        _fail(f"{path}: frontmatter requires non-empty name and description")
+    if description in SCALAR_MARKERS:
+        _fail(f"{path}: description folded marker has no body text")
     return name
 
 

@@ -1,13 +1,13 @@
 ---
-description: TerraHash Autopilot plugin boundaries — always follow AGENTS.md
+description: TerraHash Autopilot / BTC Insights host-connector boundaries for installed plugin use
 alwaysApply: true
 ---
 
-Follow `AGENTS.md` for all work in this repository.
+When using this TerraHash Autopilot plugin in a host workspace:
 
-terrahash-boundaries:
-- Host connector package only (skills + MCP placeholders). No new MCP/A2A/Worker runtime here.
-- Skills are guidance, not authorization or approval.
-- Phase 1 read-only: no miner/pool writes, trading, withdrawals, payment routes, or `publish_agent_card`.
-- URL placeholders only (`${AUTOPILOT_MCP_URL}`, `${BTC_INSIGHTS_MCP_URL}`); no invented public FQDNs.
-- Upstream Autopilot / BTC Insights contracts win on conflict.
+- Skills are guidance only — not authorization, approvals, or policy bypass.
+- Stay Phase 1 read-only: no miner/pool writes, trading, withdrawals, payment routes, or `publish_agent_card`.
+- Configure MCP with `${AUTOPILOT_MCP_URL}` / `${BTC_INSIGHTS_MCP_URL}` (or equivalent host settings). Prefer loopback or operator-private Tailscale patterns; do not invent public FQDNs.
+- Preserve upstream provenance labels; demo/fixture data is not live market truth.
+- Do not claim BTC Insights A2A wire support — that runtime is not implemented upstream.
+- Prefer catalog / adapter tool ids (`estimate_mining_profitability`, `get_current_hashprice`, `get_hashprice`, `get_network_overview`) over invented aliases.

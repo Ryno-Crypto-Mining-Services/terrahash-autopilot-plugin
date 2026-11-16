@@ -48,9 +48,12 @@ Protocol pins: MCP `2025-06-18`, A2A `0.3.0`, `publishable: false`. See
 
 ## Drift control
 
-- `AGENTS.md` is the single source of truth in this repo.
-- Thin mirrors only: `CLAUDE.md`, `.github/copilot-instructions.md`,
-  `rules/terrahash-boundaries.mdc` — point here; do not duplicate policy.
+- `AGENTS.md` is the single source of truth for **contributors** to this repo.
+- Thin contributor mirrors: `CLAUDE.md`, `.github/copilot-instructions.md` —
+  point here; do not duplicate policy.
+- `rules/terrahash-boundaries.mdc` is **host-facing** (loaded into workspaces
+  that install the plugin). Keep it read-only/provenance/placeholder guidance —
+  do not put contributor-only “do not edit this repo” policy there.
 - Skills use Agent Skills `SKILL.md` convention (same shape as
   `terrahash-mcp-server-template`).
 
