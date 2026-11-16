@@ -1,0 +1,16 @@
+[project]
+name = "terrahash-autopilot-plugin-tooling"
+version = "0.1.0"
+description = "Tooling-only validators for the TerraHash Autopilot Cursor plugin (no runtime package)."
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Ryno Crypto Mining Services" }]
+
+[project.optional-dependencies]
+dev = [
+  "detect-secrets==1.5.0",
+]
+
+[tool.uv]
+package = false
